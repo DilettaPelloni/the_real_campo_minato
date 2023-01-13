@@ -96,16 +96,16 @@ main #grid-box .cell {
 }
 
 main #grid-box .cell.selected {
-    background-color: #00C9FF;
     color: white;
     border-color: white;
+    background-color: #00C9FF;
 }
 
 main #grid-box .cell.selected.safe {
     background-color: #92FE9D;
 }
 
-main #grid-box .cell.selected.bomb {
+main #grid-box .cell.selected.red {
     background-color: #fe9292;
 }
 

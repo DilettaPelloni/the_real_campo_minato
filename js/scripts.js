@@ -51,6 +51,14 @@ function createSpan(index) {
     return span;
 }
 
+//seleziona una cella
+function selectCell(cell, span) {
+    //do la classe select
+    cell.classList.add('selected');
+    //rendo visibile lo span
+    span.classList.add('visible');
+}
+
 //----------------------------------------------------------------------------
 
 //vado a prendere il bottone
@@ -95,19 +103,20 @@ playButton.addEventListener ('click',
             const cell = createCell(selectInput);
             //genero lo span
             const span = createSpan(i);
-            console.log(span);
             //metto lo span nella cella
             cell.append(span);
+
+            //se la cella contiene una bomba assegna la classe bomb alla cella e allo span
+            if (bombArray.includes(i)) {
+                cell.classList.add('bomb');
+            }
 
             //aggiungo un event listener alla cella
             cell.addEventListener ('click',
                 function() {
                     //se non è già selezionata e il gioco non è finito
                     if ((!(this.classList.contains('selected'))) && (gameEnd == false)) {
-                        //la seleziono
-                        this.classList.add('selected');
-                        //rendo visibile lo span
-                        span.classList.add('visible');
+                        selectCell(this, span);
                         //se non contiene una bomba
                         if (!(bombArray.includes(i))) {
                             //la coloro di verde
@@ -125,8 +134,17 @@ playButton.addEventListener ('click',
                             }
                         }
                         else {
-                            //altrimenti la coloro di rosso
-                            this.classList.add('bomb');
+                            const cellArray = document.querySelectorAll('.cell');
+                            const spanArray = document.querySelectorAll('span');
+                            //altrimenti mostro tutte le celle e coloro di rosso quelle con le bombe
+                            for (let i = 0; i < cellArray.length; i++) {
+                                spanArray[i].classList.add('visible');
+                                cellArray[i].classList.add('selected');
+                                if (bombArray.includes(i+1)) {
+                                    cellArray[i].classList.add("red");
+                                }
+                            }
+                            
                             //mi segno che la partita è terminata
                             gameEnd = true;
                             //comunico che l'utente ha perso
