@@ -1,0 +1,134 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* GENERALI */
+body * {
+    font-family: 'Roboto', sans-serif;
+    color: #303030;
+}
+
+.container {
+    height: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+
+
+/* HEADER */
+header {
+    height: 100px;
+    background-color: white;
+}
+
+header .top-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    color: #00C9FF;
+}
+
+header .cmd-box * {
+    padding: 1rem 1.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+header #play-button {
+    border: 5px solid transparent;
+    background-color: #00C9FF;
+    color: white;
+}
+
+header #diff {
+    border: 5px solid #00C9FF;
+}
+
+header #diff option {
+    background-color: #00C9FF;
+    color: white;
+}
+
+/* MAIN */
+main {
+    height: calc(100vh - 200px);
+    background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* GRID-BOX */
+main #grid-box {
+    height: calc(80vh - 200px);
+    width: calc(80vh - 200px);
+    opacity: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#grid-box.visible {
+    opacity: 1;
+}
+
+
+main #grid-box .cell {
+    border: 1px solid transparent;
+    background-color: white;
+    background-clip: padding-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main #grid-box .cell.selected {
+    background-color: #00C9FF;
+    color: white;
+    border-color: white;
+}
+
+main #grid-box .cell.selected.safe {
+    background-color: #92FE9D;
+}
+
+main #grid-box .cell.selected.bomb {
+    background-color: #fe9292;
+}
+
+main #grid-box .cell span {
+    font-size: 1.5rem;
+    color: inherit;
+    opacity: 0;
+}
+
+main #grid-box .cell span.visible {
+    opacity: 1;
+}
+
+
+/* FOOTER */
+footer {
+    height: 100px;
+    background-color: white;
+}
+
+footer #message-box {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
