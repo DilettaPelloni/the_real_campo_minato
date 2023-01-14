@@ -17,8 +17,6 @@ body * {
     margin: 0 auto;
 }
 
-
-
 /* HEADER */
 header {
     height: 100px;
@@ -64,7 +62,6 @@ main {
     background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
 
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -84,7 +81,6 @@ main #grid-box {
     opacity: 1;
 }
 
-
 main #grid-box .cell {
     border: 1px solid transparent;
     background-color: white;
@@ -94,31 +90,6 @@ main #grid-box .cell {
     justify-content: center;
     align-items: center;
 }
-
-main #grid-box .cell.selected {
-    color: white;
-    border-color: white;
-    background-color: #00C9FF;
-}
-
-main #grid-box .cell.selected.safe {
-    background-color: #92FE9D;
-}
-
-main #grid-box .cell.selected.red {
-    background-color: #fe9292;
-}
-
-main #grid-box .cell span {
-    font-size: 1.5rem;
-    color: inherit;
-    opacity: 0;
-}
-
-main #grid-box .cell span.visible {
-    opacity: 1;
-}
-
 
 /* FOOTER */
 footer {
