@@ -138,8 +138,7 @@ playButton.addEventListener ('click',
                             const spanArray = document.querySelectorAll('span');
                             //altrimenti mostro tutte le celle e coloro di rosso quelle con le bombe
                             for (let i = 0; i < cellArray.length; i++) {
-                                spanArray[i].classList.add('visible');
-                                cellArray[i].classList.add('selected');
+                                selectCell(cellArray[i], spanArray[i]);
                                 if (bombArray.includes(i+1)) {
                                     cellArray[i].classList.add("red");
                                 }
