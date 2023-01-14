@@ -41,38 +41,45 @@ function createBombArray (bombNum, cellNum) {
 }
 
 //restituire quante bombe ha attorno una cella
-function numberOfNearBombs(cell, cellInRow, bombArray) {
+function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
     //creo un contatore
     let counter = 0;
     const cellID = parseInt(cell.id);
 
+    //se sei la prima riga
+    if (cellID - cellInRow > 0) {
+        if ((bombArray.includes(cellID - cellInRow - 1)) && (cellID % cellInRow != 1)){
+            counter++;
+        }
+        if (bombArray.includes(cellID - cellInRow)){
+            counter++;
+        }
+        if ((bombArray.includes(cellID - cellInRow + 1)) && (cellID % cellInRow != 0)) {
+            counter++;
+        }
+    }
+
+    //se sei l'ultima riga
+    if (cellID + cellInRow < cellNumber) {
+        if ((bombArray.includes(cellID + cellInRow - 1)) && (cellID % cellInRow != 1)) {
+            counter++;
+        }
+        if (bombArray.includes(cellID + cellInRow)) {
+            counter++;
+        }
+        if ((bombArray.includes(cellID + cellInRow + 1)) && (cellID % cellInRow != 0)) {
+            counter++;
+        }
+    }
+
+    // se non sei ne l'ultima ne la prima
+    if ((bombArray.includes(cellID - 1)) && (cellID % cellInRow != 1)) {
+        counter++;
+    }
+    if ((bombArray.includes(cellID + 1)) && (cellID % cellInRow != 0)) {
+        counter++;
+    }
     
-
-    if (bombArray.includes(cellID - cellInRow - 1)){
-        counter++;
-    }
-    if (bombArray.includes(cellID - cellInRow)){
-        counter++;
-    }
-    if (bombArray.includes(cellID - cellInRow + 1)) {
-        counter++;
-    }
-    if (bombArray.includes(cellID - 1)) {
-        counter++;
-    }
-    if (bombArray.includes(cellID + 1)) {
-        counter++;
-    }
-    if (bombArray.includes(cellID + cellInRow - 1)) {
-        counter++;
-    }
-    if (bombArray.includes(cellID + cellInRow)) {
-        counter++;
-    }
-    if (bombArray.includes(cellID + cellInRow + 1)) {
-        counter++;
-    }
-
     return counter;
 }
 
@@ -120,7 +127,7 @@ playButton.addEventListener ('click',
 
         for (let i = 1; i <= cellNumber; i++) {
             const cell = document.getElementById(i);
-            cell.innerText = numberOfNearBombs(cell, cellInRow, bombArray);
+            cell.innerText = numberOfNearBombs(cell, cellInRow, bombArray, cellNumber);
         }
 
 
