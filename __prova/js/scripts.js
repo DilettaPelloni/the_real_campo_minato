@@ -106,7 +106,7 @@ playButton.addEventListener ('click',
             //metto lo span nella cella
             cell.append(span);
 
-            //se la cella contiene una bomba assegna la classe bomb alla cella e allo span
+            //se la cella contiene una bomba assegna la classe bomb
             if (bombArray.includes(i)) {
                 cell.classList.add('bomb');
             }

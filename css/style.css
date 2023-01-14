@@ -91,6 +91,10 @@ main #grid-box .cell {
     align-items: center;
 }
 
+main #grid-box .cell.red {
+    background-color: #fe9292;
+}
+
 /* FOOTER */
 footer {
     height: 100px;
