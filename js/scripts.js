@@ -42,10 +42,12 @@ playButton.addEventListener ('click',
         for (let i = 1; i <= cellNumber; i++) {
             //genero la cella
             const cell = createCell(cellNumber);
+            //do alla cella un ID
+            cell.id = i;
             //aggiungo la cella alla grid box
             gridBox.append(cell);
         }
-        
+
         //rendo visibile la grid-box
         gridBox.classList.add('visible');
 })
