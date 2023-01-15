@@ -40,7 +40,7 @@ function createBombArray (bombNum, cellNum) {
     return bombArray;
 }
 
-//restituire quante bombe ha attorno una cella
+//per restituire quante bombe ha attorno una cella
 function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
     //creo un contatore
     let counter = 0;
@@ -83,6 +83,14 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
     return counter;
 }
 
+//seleziona una cella
+function selectCell(cell, span) {
+    //do la classe select
+    cell.classList.add('selected');
+    //rendo visibile lo span
+    span.classList.add('visible');
+}
+
 //----------------------------------------------------------------------------
 
 
@@ -90,9 +98,16 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
 const playButton = document.getElementById('play-button');
 const gridBox = document.getElementById('grid-box');
 const select = document.getElementById('diff');
+const messageBox = document.getElementById('message-box');
 
 //decido il numero di bombe
 const bombNum = 16;
+
+//creo un contatore di punti
+let pointCounter = 0;
+
+//creo una flag per determinare se il gioco è finito
+let gameEnd = false;
 
 //click PLAY
 playButton.addEventListener ('click',
@@ -100,6 +115,9 @@ playButton.addEventListener ('click',
 
         //inizializzo il gioco
         gridBox.innerHTML = '';
+        gameEnd = false;
+        pointCounter = 0;
+        messageBox.innerHTML = "";
         
         //vado a prendere il valore della select che contiene il numero di celle
         const cellNumber = parseInt(select.value);
@@ -116,25 +134,84 @@ playButton.addEventListener ('click',
             const cell = createCell(cellNumber);
             //do alla cella un ID
             cell.id = i;
-            //se la cella contiene una bomba assegna la classe bomb e colora di rosso
+            //se la cella contiene una bomba assegna la classe bomb
             if (bombArray.includes(i)) {
-                cell.classList.add('bomb', 'red');
+                cell.classList.add('bomb');
             }
             //aggiungo la cella alla grid box
             gridBox.append(cell);
         }
 
-
+        //metto ad ogni cella uno span che contiene una bandierina
         for (let i = 1; i <= cellNumber; i++) {
             const cell = document.getElementById(i);
-            cell.innerText = numberOfNearBombs(cell, cellInRow, bombArray, cellNumber);
+            const span = document.createElement('span');
+            span.classList.add('flag');
+            span.innerHTML = '&#128681';
+            cell.append(span);
         }
 
+        //metto dentro ad ogni cella uno span che contiene il numero di bombe che ha accanto, oppure mette una bomba
+        for (let i = 1; i <= cellNumber; i++) {
+            const cell = document.getElementById(i);
+            const span = document.createElement('span');
+            span.classList.add('content');
+            //se la cella contiene una bomba metto l'emoji di una bomba
+            if (bombArray.includes(i)){
+                span.innerHTML = '&#128163;'
+            }
+            else{
+                //altrimenti il numero di bombe che ha accanto
+                span.innerText = numberOfNearBombs(cell, cellInRow, bombArray, cellNumber);
+            }
+            cell.append(span);
+        }
 
-        bombArray.sort();
-        console.log(bombArray)
-        console.log(cellInRow)
+        //creo un array con gli span
+        const spanList = document.querySelectorAll('.content');
 
+        //ad ogni cella aggiungo un evento 
+
+        //ad ogni cella aggiungo un evento al click
+        for (let i = 1; i <= cellNumber; i++) {
+
+            const cell = document.getElementById(i);
+            const span = spanList[i - 1];
+
+            cell.addEventListener ('click',
+                function() {
+                    //se non è già selezionata e il gioco non è finito
+                    if ((!(this.classList.contains('selected'))) && (gameEnd == false)) {
+
+                        //la seleziono
+                        selectCell(this, span);
+
+                        //se non contiene una bomba
+                        if (!(bombArray.includes(i))) {
+                            //incremento di uno il punteggio
+                            pointCounter += 1;
+                            //scrivo il punteggio
+                            messageBox.innerHTML = 'Punteggio: ' + pointCounter;;
+                            //se ho raggiunto il punteggio massimo
+                            if (pointCounter ==  cellNumber - bombNum) {
+                                //termino la partita
+                                gameEnd = true;
+                                //comunico che l'utente ha vinto
+                                messageBox.innerHTML = "HAI VINTO! Il tuo punteggio è " + pointCounter + ". Premi di nuovo PLAY per fare un'altra partita";
+                            }
+                        }
+                        else {
+                            //mi segno che la partita è terminata
+                            gameEnd = true;
+                            //comunico che l'utente ha perso
+                            messageBox.innerHTML = "HAI PERSO! Il tuo punteggio è " + pointCounter + ". Premi di nuovo PLAY per fare un'altra partita";
+                        }
+                    }
+                }
+            )
+        }
+
+    
         //rendo visibile la grid-box
         gridBox.classList.add('visible');
 

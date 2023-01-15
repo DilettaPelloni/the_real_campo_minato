@@ -89,10 +89,31 @@ main #grid-box .cell {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    position: relative;
+}
+
+main #grid-box .cell.selected {
+    background-color: #00C9FF;
 }
 
 main #grid-box .cell.red {
     background-color: #fe9292;
+}
+
+main #grid-box .cell span.content{
+    display: none;
+    user-select: none;
+    color: white;
+    font-weight: bold;
+}
+
+main #grid-box .cell span.flag{
+    display: none;
+}
+
+main #grid-box .cell span.visible{
+    display: inline;
 }
 
 /* FOOTER */
