@@ -169,14 +169,35 @@ playButton.addEventListener ('click',
 
         //creo un array con gli span
         const spanList = document.querySelectorAll('.content');
+        const flagList = document.querySelectorAll('.flag');
 
-        //ad ogni cella aggiungo un evento 
+        //ad ogni cella aggiungo un evento al click destro
+        for (let i = 1; i <= cellNumber; i++) {
 
-        //ad ogni cella aggiungo un evento al click
+            const cell = document.getElementById(i);
+            const span = flagList[i - 1];
+
+            cell.addEventListener ('contextmenu',
+                function(ev) {
+                    ev.preventDefault();
+
+                    //se non è già selezionata e il gioco non è finito
+                    if ((!(this.classList.contains('selected'))) && (gameEnd == false)) {
+                        //mostro la bandiera
+                        span.classList.toggle('visible');
+                    }
+                }
+            )
+
+        }
+
+
+        //ad ogni cella aggiungo un evento al click sinistro
         for (let i = 1; i <= cellNumber; i++) {
 
             const cell = document.getElementById(i);
             const span = spanList[i - 1];
+            const flag = flagList[i - 1];
 
             cell.addEventListener ('click',
                 function() {
@@ -185,6 +206,8 @@ playButton.addEventListener ('click',
 
                         //la seleziono
                         selectCell(this, span);
+                        //tolgo la bandiera se c'è
+                        flag.classList.toggle('visible');
 
                         //se non contiene una bomba
                         if (!(bombArray.includes(i))) {
