@@ -46,7 +46,7 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
     let counter = 0;
     const cellID = parseInt(cell.id);
 
-    //se sei la prima riga
+    //se non sei la prima riga
     if (cellID - cellInRow > 0) {
         if ((bombArray.includes(cellID - cellInRow - 1)) && (cellID % cellInRow != 1)){
             counter++;
@@ -59,8 +59,8 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
         }
     }
 
-    //se sei l'ultima riga
-    if (cellID + cellInRow < cellNumber) {
+    //se non sei l'ultima riga
+    if (cellID + cellInRow <= cellNumber) {
         if ((bombArray.includes(cellID + cellInRow - 1)) && (cellID % cellInRow != 1)) {
             counter++;
         }
@@ -72,7 +72,7 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
         }
     }
 
-    // se non sei ne l'ultima ne la prima
+    // qualsiasi riga
     if ((bombArray.includes(cellID - 1)) && (cellID % cellInRow != 1)) {
         counter++;
     }
@@ -83,13 +83,116 @@ function numberOfNearBombs(cell, cellInRow, bombArray, cellNumber) {
     return counter;
 }
 
-//seleziona una cella
+//per selezionare una cella
 function selectCell(cell, span) {
     //do la classe select
     cell.classList.add('selected');
     //rendo visibile lo span
     span.classList.add('visible');
 }
+
+//per selezionare tutte le celle accanto ad una data cella
+function selectNearCells (cell, cellInRow, bombArray, cellNumber) {
+    const cellID = parseInt(cell.id);
+    const spanList = document.querySelectorAll('.content');
+
+        //se non sei la prima riga
+        if (cellID - cellInRow > 0) {
+            if (cellID % cellInRow != 1){
+                const selectedCell = document.getElementById(cellID - cellInRow - 1);
+                const selectedSpan = spanList[cellID - cellInRow - 1 - 1];
+
+                const spanContent = parseInt(selectedSpan.innerText);
+                if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                    selectCell(selectedCell, selectedSpan);
+                    selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+                }
+                selectCell(selectedCell, selectedSpan);
+            }
+            if (cellID % cellInRow != 0) {
+                const selectedCell = document.getElementById(cellID - cellInRow + 1);
+                const selectedSpan = spanList[cellID - cellInRow + 1 - 1];
+
+                const spanContent = parseInt(selectedSpan.innerText);
+                if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                    selectCell(selectedCell, selectedSpan);
+                    selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+                }
+                selectCell(selectedCell, selectedSpan);
+            }
+            const selectedCell = document.getElementById(cellID - cellInRow);
+            const selectedSpan = spanList[cellID - cellInRow - 1];
+
+            const spanContent = parseInt(selectedSpan.innerText);
+            if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                selectCell(selectedCell, selectedSpan);
+                selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+            }
+            selectCell(selectedCell, selectedSpan);
+        }
+    
+        //se non sei l'ultima riga
+        if (cellID + cellInRow <= cellNumber) {
+            if (cellID % cellInRow != 1) {
+                const selectedCell = document.getElementById(cellID + cellInRow - 1);
+                const selectedSpan = spanList[cellID + cellInRow - 1 - 1];
+
+                const spanContent = parseInt(selectedSpan.innerText);
+                if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                    selectCell(selectedCell, selectedSpan);
+                    selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+                }
+                selectCell(selectedCell, selectedSpan);
+            }
+            if (cellID % cellInRow != 0) {
+                const selectedCell = document.getElementById(cellID + cellInRow + 1);
+                const selectedSpan = spanList[cellID + cellInRow + 1 - 1];
+
+                const spanContent = parseInt(selectedSpan.innerText);
+                if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                    selectCell(selectedCell, selectedSpan);
+                    selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+                }
+                selectCell(selectedCell, selectedSpan);
+            }
+            const selectedCell = document.getElementById(cellID + cellInRow);
+            const selectedSpan = spanList[cellID + cellInRow - 1];
+
+            const spanContent = parseInt(selectedSpan.innerText);
+            if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                selectCell(selectedCell, selectedSpan);
+                selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+            }
+            selectCell(selectedCell, selectedSpan);
+        }
+    
+        // qualsiasi riga
+        if (cellID % cellInRow != 1) {
+            const selectedCell = document.getElementById(cellID - 1);
+            const selectedSpan = spanList[cellID - 1 - 1];
+
+            const spanContent = parseInt(selectedSpan.innerText);
+            if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                selectCell(selectedCell, selectedSpan);
+                selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+            }
+            selectCell(selectedCell, selectedSpan);
+        }
+        if (cellID % cellInRow != 0) {
+            const selectedCell = document.getElementById(cellID + 1);
+            const selectedSpan = spanList[cellID + 1 - 1];
+
+            const spanContent = parseInt(selectedSpan.innerText);
+            if ((spanContent == 0) && (!selectedCell.classList.contains('selected'))) {
+                selectCell(selectedCell, selectedSpan);
+                selectNearCells (selectedCell, cellInRow, bombArray, cellNumber);
+            }
+            selectCell(selectedCell, selectedSpan);
+        }
+}
+
+
+
 
 //----------------------------------------------------------------------------
 
@@ -103,9 +206,6 @@ const messageBox = document.getElementById('message-box');
 //decido il numero di bombe
 const bombNum = 16;
 
-//creo un contatore di punti
-let pointCounter = 0;
-
 //creo una flag per determinare se il gioco è finito
 let gameEnd = false;
 
@@ -116,8 +216,10 @@ playButton.addEventListener ('click',
         //inizializzo il gioco
         gridBox.innerHTML = '';
         gameEnd = false;
-        pointCounter = 0;
         messageBox.innerHTML = "";
+
+        //rendo visibile la grid-box
+        gridBox.classList.add('visible');
         
         //vado a prendere il valore della select che contiene il numero di celle
         const cellNumber = parseInt(select.value);
@@ -167,7 +269,7 @@ playButton.addEventListener ('click',
             cell.append(span);
         }
 
-        //creo un array con gli span
+        //creo degli array con gli span
         const spanList = document.querySelectorAll('.content');
         const flagList = document.querySelectorAll('.flag');
 
@@ -191,12 +293,12 @@ playButton.addEventListener ('click',
 
         }
 
-
         //ad ogni cella aggiungo un evento al click sinistro
         for (let i = 1; i <= cellNumber; i++) {
 
             const cell = document.getElementById(i);
             const span = spanList[i - 1];
+            const bombIndicator = parseInt(span.innerText);
             const flag = flagList[i - 1];
 
             cell.addEventListener ('click',
@@ -207,41 +309,36 @@ playButton.addEventListener ('click',
                         //la seleziono
                         selectCell(this, span);
                         //tolgo la bandiera se c'è
-                        flag.classList.toggle('visible');
+                        flag.classList.remove('visible');
 
                         //se non contiene una bomba
                         if (!(bombArray.includes(i))) {
-                            //incremento di uno il punteggio
-                            pointCounter += 1;
-                            //scrivo il punteggio
-                            messageBox.innerHTML = 'Punteggio: ' + pointCounter;;
+                            //se la cella non ha bombe accanto
+                            if (bombIndicator == 0) {
+                                selectNearCells (this, cellInRow, bombArray, cellNumber);
+                            };
+
+                            //vado a prendere tutte le celle selezionate
+                            const selectedCellsList = document.querySelectorAll('.selected');
+
                             //se ho raggiunto il punteggio massimo
-                            if (pointCounter ==  cellNumber - bombNum) {
+                            if (selectedCellsList.length ==  cellNumber - bombNum) {
                                 //termino la partita
                                 gameEnd = true;
                                 //comunico che l'utente ha vinto
-                                messageBox.innerHTML = "HAI VINTO! Il tuo punteggio è " + pointCounter + ". Premi di nuovo PLAY per fare un'altra partita";
+                                messageBox.innerHTML = "HAI VINTO! Premi di nuovo PLAY per fare un'altra partita";
                             }
                         }
                         else {
                             //mi segno che la partita è terminata
                             gameEnd = true;
                             //comunico che l'utente ha perso
-                            messageBox.innerHTML = "HAI PERSO! Il tuo punteggio è " + pointCounter + ". Premi di nuovo PLAY per fare un'altra partita";
+                            messageBox.innerHTML = "HAI PERSO! Premi di nuovo PLAY per fare un'altra partita";
                         }
                     }
                 }
             )
         }
-
-    
-        //rendo visibile la grid-box
-        gridBox.classList.add('visible');
-
-
-
-
-
 })
 
 
